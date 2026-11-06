@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#6366f1">
+<meta name="description" content="Интерактивный урок геометрии 7 класс: медианы, биссектрисы, высоты, серединные перпендикуляры и средние линии треугольника. ЦО 7.1.1.12">
+<title>Геометрия 7 · Линии треугольника</title>
+<style>
+/* ============ ПЕРЕМЕННЫЕ И БАЗА ============ */
+:root{
+  --b1:#6366f1; --b2:#a855f7; --b3:#ec4899;
+  --bg:#f3f5ff; --bg2:#fdf2f8;
+  --card:#ffffff; --card2:#f8faff;
+  --ink:#141830; --muted:#5d6684; --line:#e5e9f7;
+  --median:#ef4444; --bisector:#10b981; --altitude:#3b82f6; --perp:#a855f7; --midline:#f59e0b;
+  --ok:#16a34a; --bad:#e11d48;
+  --r:22px; --sh:0 12px 34px rgba(28,30,80,.10);
+}
+[data-theme="dark"]{
+  --bg:#0b0e1c; --bg2:#131029;
+  --card:#161a2f; --card2:#1c2140;
+  --ink:#eaeeff; --muted:#a2abcb; --line:#2a3055;
+  --sh:0 12px 34px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,'Roboto','Helvetica Neue',sans-serif;
+  color:var(--ink); background:var(--bg); line-height:1.55; overflow-x:hidden;
+  background-image:radial-gradient(1000px 600px at 10% -10%, rgba(99,102,241,.18), transparent 60%),
+                   radial-gradient(900px 600px at 100% 0%, rgba(236,72,153,.15), transparent 55%),
+                   linear-gradient(180deg,var(--bg),var(--bg2));
+  background-attachment:fixed;
+}
+img,svg{max-width:100%}
+h1,h2,h3,h4{margin:0 0 .5em;line-height:1.25}
+p{margin:.4em 0}
+a{color:var(--b1)}
+.wrap{max-width:1100px;margin:0 auto;padding:18px 14px 60px}
+
+/* ============ ШАПКА И МЕНЮ ============ */
+header.top{
+  position:sticky;top:0;z-index:50;
+  background:linear-gradient(120deg,var(--b1),var(--b2) 55%,var(--b3));
+  box-shadow:0 8px 26px rgba(80,50,180,.28);
+  padding-top:env(safe-area-inset-top);
+}
+.top-in{max-width:1100px;margin:0 auto;padding:10px 14px 0}
+.top-row{display:flex;align-items:center;gap:10px}
+.logo{display:flex;align-items:center;gap:9px;color:#fff;font-weight:800;letter-spacing:.2px}
+.logo .ico{width:34px;height:34px;border-radius:11px;background:rgba(255,255,255,.22);display:grid;place-items:center;font-size:18px}
+.logo small{display:block;font-weight:500;font-size:11px;opacity:.85}
+.spacer{flex:1}
+.icon-btn{
+  border:0;background:rgba(255,255,255,.18);color:#fff;width:38px;height:38px;border-radius:12px;
+  font-size:17px;cursor:pointer;display:grid;place-items:center;transition:.2s
+}
+.icon-btn:hover{background:rgba(255,255,255,.32)}
+nav.tabs{display:flex;gap:7px;overflow-x:auto;padding:10px 0 11px;scrollbar-width:none;scroll-snap-type:x proximity}
+nav.tabs::-webkit-scrollbar{display:none}
+.tab{
+  flex:0 0 auto;scroll-snap-align:center;border:0;cursor:pointer;white-space:nowrap;
+  padding:9px 15px;border-radius:999px;font-size:14px;font-weight:700;
+  background:rgba(255,255,255,.16);color:#fff;transition:.22s;min-height:40px
+}
+.tab:hover{background:rgba(255,255,255,.3)}
+.tab.active{background:#fff;color:#5b21b6;box-shadow:0 6px 16px rgba(0,0,0,.18)}
+[data-theme="dark"] .tab.active{color:#c4b5fd;background:#1b1f3a}
+.topbar-progress{height:4px;background:rgba(255,255,255,.25)}
+.topbar-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#fde047,#4ade80);transition:width .6s cubic-bezier(.2,.8,.2,1)}
+
+/* ============ КАРТОЧКИ ============ */
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  box-shadow:var(--sh);padding:20px;margin:0 0 18px;position:relative;overflow:hidden
+}
+.card.pad0{padding:0}
+.card h2{font-size:clamp(19px,4.6vw,25px)}
+.card h3{font-size:clamp(16px,4vw,20px)}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(215px,1fr))}
+.muted{color:var(--muted)}
+.small{font-size:13.5px}
+.center{text-align:center}
+.badge{
+  display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:999px;
+  background:linear-gradient(120deg,rgba(99,102,241,.14),rgba(236,72,153,.14));
+  color:var(--b2);font-weight:800;font-size:12.5px;letter-spacing:.4px;text-transform:uppercase
+}
+.page{display:none;animation:fade .45s cubic-bezier(.2,.8,.2,1)}
+.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* ============ ГЛАВНАЯ ============ */
+.hero{
+  background:linear-gradient(135deg,#6366f1,#a855f7 50%,#ec4899);color:#fff;border:0;
+  padding:26px 22px;border-radius:26px;box-shadow:0 20px 44px rgba(120,60,200,.32)
+}
+.hero h1{font-size:clamp(23px,6vw,38px);margin:10px 0 8px;text-wrap:balance}
+.hero .badge{background:rgba(255,255,255,.22);color:#fff}
+.hero p{opacity:.95}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;align-items:center}
+@media(max-width:760px){.hero-grid{grid-template-columns:1fr}}
+.hero-fig{background:rgba(255,255,255,.94);border-radius:18px;padding:8px;cursor:pointer}
+[data-theme="dark"] .hero-fig{background:#0f1327}
+.hero-cap{text-align:center;font-weight:800;font-size:14px;padding:2px 0 6px;color:#4c1d95}
+[data-theme="dark"] .hero-cap{color:#ddd6fe}
+.goal{
+  background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);
+  border-radius:16px;padding:13px 15px;margin-top:14px;backdrop-filter:blur(6px)
+}
+.goal b{display:block;font-size:12.5px;letter-spacing:.6px;opacity:.9;text-transform:uppercase}
+.navcard{
+  cursor:pointer;border:1px solid var(--line);background:var(--card);border-radius:18px;padding:17px;
+  transition:.25s;display:flex;gap:13px;align-items:flex-start;text-align:left;font:inherit;color:inherit;width:100%
+}
+.navcard:hover{transform:translateY(-4px);box-shadow:0 16px 30px rgba(60,40,140,.16);border-color:var(--b2)}
+.navcard .em{font-size:26px;width:48px;height:48px;flex:0 0 48px;border-radius:14px;display:grid;place-items:center;
+  background:linear-gradient(135deg,rgba(99,102,241,.15),rgba(236,72,153,.15))}
+.navcard b{display:block;font-size:16px}
+.steps{counter-reset:s;display:grid;gap:10px}
+.steps li{list-style:none;display:flex;gap:12px;align-items:center;background:var(--card2);border-radius:14px;padding:11px 14px}
+.steps li::before{
+  counter-increment:s;content:counter(s);flex:0 0 30px;height:30px;border-radius:50%;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--b1),var(--b3));color:#fff;font-weight:800;font-size:14px
+}
+.kbd{display:inline-block;background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:2px 8px;font-size:12.5px;font-weight:700}
+
+/* ============ КНОПКИ ============ */
+.btn{
+  border:0;cursor:pointer;font:inherit;font-weight:800;padding:13px 22px;border-radius:14px;min-height:48px;
+  background:linear-gradient(135deg,var(--b1),var(--b2) 60%,var(--b3));color:#fff;
+  box-shadow:0 10px 22px rgba(120,60,200,.28);transition:.2s;display:inline-flex;align-items:center;gap:9px;justify-content:center
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(120,60,200,.36)}
+.btn:active{transform:translateY(0)}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+.btn.ghost{background:var(--card2);color:var(--ink);border:1.5px solid var(--line);box-shadow:none}
+.btn.ghost:hover{border-color:var(--b2);box-shadow:none}
+.btn.sm{padding:9px 15px;min-height:40px;font-size:14px;border-radius:12px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+
+/* ============ ТЕОРИЯ ============ */
+.legend{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:6px}
+.lg{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;background:var(--card2);
+  border:1px solid var(--line);padding:6px 12px;border-radius:999px}
+.lg i{width:16px;height:4px;border-radius:3px;display:block}
+.concept{border-left:6px solid var(--c)}
+.concept .head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.concept .num{width:40px;height:40px;flex:0 0 40px;border-radius:13px;display:grid;place-items:center;color:#fff;font-weight:900;
+  background:var(--c);box-shadow:0 8px 18px color-mix(in srgb,var(--c) 40%,transparent)}
+.concept h2{margin:0;color:var(--c)}
+.two{display:grid;grid-template-columns:minmax(240px,360px) 1fr;gap:20px;align-items:start}
+@media(max-width:780px){.two{grid-template-columns:1fr}}
+.fig{width:100%;height:auto;background:var(--card2);border:1px solid var(--line);border-radius:16px;display:block}
+.def{
+  background:linear-gradient(135deg,color-mix(in srgb,var(--c) 12%,var(--card)),var(--card));
+  border:1.5px dashed color-mix(in srgb,var(--c) 45%,transparent);border-radius:16px;padding:13px 15px;margin-bottom:12px
+}
+.def b{color:var(--c)}
+ul.ticks{padding-left:0;margin:8px 0;display:grid;gap:7px}
+ul.ticks li{list-style:none;padding-left:26px;position:relative;font-size:14.6px}
+ul.ticks li::before{content:"✔";position:absolute;left:0;top:0;color:var(--c,var(--b2));font-weight:900}
+.note{background:color-mix(in srgb,#f59e0b 13%,var(--card));border-left:4px solid #f59e0b;border-radius:12px;padding:11px 14px;font-size:14.3px;margin-top:10px}
+.note.blue{background:color-mix(in srgb,#3b82f6 12%,var(--card));border-color:#3b82f6}
+.note.red{background:color-mix(in srgb,#ef4444 12%,var(--card));border-color:#ef4444}
+details{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:11px 14px;margin-top:10px}
+details summary{cursor:pointer;font-weight:800;font-size:14.6px;list-style:none}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"▸ ";color:var(--b2)}
+details[open] summary::before{content:"▾ "}
+details ol{margin:10px 0 2px;padding-left:20px;font-size:14.4px}
+details ol li{margin:4px 0}
+.tablewrap{overflow-x:auto;border-radius:14px;border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:14px;background:var(--card)}
+th,td{padding:11px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:linear-gradient(135deg,var(--b1),var(--b2));color:#fff;font-size:13px;text-transform:uppercase;letter-spacing:.4px}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:800}
+
+/* ============ ПРАКТИКУМ ============ */
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{
+  display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;cursor:pointer;
+  border:2px solid var(--line);background:var(--card);font-weight:700;font-size:13.6px;transition:.2s;user-select:none;min-height:42px
+}
+.chip .dot{width:12px;height:12px;border-radius:50%;background:var(--c,var(--b2));flex:0 0 12px}
+.chip input{display:none}
+.chip.on{border-color:var(--c,var(--b2));background:color-mix(in srgb,var(--c,var(--b2)) 14%,var(--card));box-shadow:0 4px 12px color-mix(in srgb,var(--c,var(--b2)) 25%,transparent)}
+.lab-svg{touch-action:none;cursor:grab;background:var(--card2);border:1px solid var(--line);border-radius:18px;width:100%;height:auto;display:block}
+.lab-svg:active{cursor:grabbing}
+.readouts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:12px}
+.ro{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.ro span{display:block;font-size:11.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700}
+.ro b{font-size:16px}
+.tasklist{display:grid;gap:10px;margin-top:6px}
+.task{display:flex;gap:12px;align-items:flex-start;background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:12px 14px;transition:.3s}
+.task .box{flex:0 0 26px;height:26px;border-radius:9px;border:2px solid var(--line);display:grid;place-items:center;font-size:14px;color:transparent;transition:.3s}
+.task.done{border-color:var(--ok);background:color-mix(in srgb,#16a34a 10%,var(--card))}
+.task.done .box{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt{
+  display:block;width:100%;text-align:left;border:2px solid var(--line);background:var(--card);color:inherit;font:inherit;
+  padding:13px 15px;border-radius:14px;cursor:pointer;transition:.18s;margin-bottom:9px;min-height:52px;font-size:15px
+}
+.opt:hover{border-color:var(--b2);transform:translateX(3px)}
+.opt.sel{border-color:var(--b2);background:color-mix(in srgb,var(--b2) 12%,var(--card));font-weight:700}
+.opt.right{border-color:var(--ok);background:color-mix(in srgb,#16a34a 15%,var(--card));font-weight:700}
+.opt.wrong{border-color:var(--bad);background:color-mix(in srgb,#e11d48 13%,var(--card))}
+.opt[disabled]{cursor:default;transform:none}
+
+/* ============ ТЕСТ ============ */
+.qbar{height:9px;border-radius:99px;background:var(--line);overflow:hidden;margin-bottom:16px}
+.qbar i{display:block;height:100%;background:linear-gradient(90deg,var(--b1),var(--b3));width:0;transition:width .4s}
+.ring{width:158px;height:158px;border-radius:50%;display:grid;place-items:center;position:relative;margin:6px auto 12px;
+  background:conic-gradient(var(--b2) calc(var(--p)*1%), var(--line) 0);transition:.8s}
+.ring::before{content:"";position:absolute;width:124px;height:124px;border-radius:50%;background:var(--card)}
+.ring span{position:relative;font-weight:900;font-size:31px}
+.review{border:1px solid var(--line);border-radius:14px;padding:13px 15px;margin-bottom:10px;background:var(--card2);border-left:5px solid var(--ok)}
+.review.bad{border-left-color:var(--bad)}
+.review .qt{font-weight:800;font-size:14.8px;margin-bottom:6px}
+.review .ln{font-size:14px}
+.review .exp{font-size:13.5px;color:var(--muted);margin-top:6px;border-top:1px dashed var(--line);padding-top:6px}
+.pill{display:inline-block;padding:3px 10px;border-radius:99px;font-size:12px;font-weight:800}
+.pill.ok{background:color-mix(in srgb,#16a34a 18%,var(--card));color:var(--ok)}
+.pill.no{background:color-mix(in srgb,#e11d48 16%,var(--card));color:var(--bad)}
+
+/* ============ РЕФЛЕКСИЯ / ДЗ ============ */
+.ladder{display:grid;gap:10px}
+.lad{display:flex;gap:12px;align-items:center;border:2px solid var(--line);background:var(--card);border-radius:16px;padding:13px 15px;cursor:pointer;transition:.2s;font:inherit;color:inherit;text-align:left;width:100%}
+.lad:hover{border-color:var(--b2)}
+.lad.on{border-color:var(--b2);background:linear-gradient(135deg,rgba(99,102,241,.13),rgba(236,72,153,.13));font-weight:700}
+.lad .e{font-size:26px}
+.moods{display:flex;gap:10px;flex-wrap:wrap}
+.mood{font-size:29px;width:58px;height:58px;border-radius:18px;border:2px solid var(--line);background:var(--card);cursor:pointer;transition:.2s}
+.mood:hover{transform:translateY(-3px)}
+.mood.on{border-color:var(--b2);background:color-mix(in srgb,var(--b2) 14%,var(--card));transform:scale(1.08)}
+textarea{
+  width:100%;min-height:78px;border-radius:14px;border:2px solid var(--line);background:var(--card2);color:var(--ink);
+  padding:12px 14px;font:inherit;font-size:15px;resize:vertical;transition:.2s
+}
+textarea:focus{outline:0;border-color:var(--b2);background:var(--card)}
+.check{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:14px;background:var(--card2);border:1px solid var(--line);cursor:pointer;transition:.2s;margin-bottom:9px}
+.check:hover{border-color:var(--b2)}
+.check input{width:22px;height:22px;flex:0 0 22px;margin-top:1px;accent-color:#7c3aed;cursor:pointer}
+.check.done{background:color-mix(in srgb,#16a34a 10%,var(--card));border-color:var(--ok)}
+.hw-big{
+  background:linear-gradient(135deg,#f59e0b,#ec4899 70%,#a855f7);color:#fff;border:0;border-radius:24px;padding:24px;
+  box-shadow:0 18px 40px rgba(230,90,150,.3)
+}
+.hw-item{background:rgba(255,255,255,.17);border:1px solid rgba(255,255,255,.3);border-radius:16px;padding:14px 16px;margin-top:12px}
+.hw-item b{font-size:17px}
+.toast{
+  position:fixed;left:50%;bottom:26px;transform:translate(-50%,90px);z-index:99;
+  background:linear-gradient(135deg,var(--b1),var(--b3));color:#fff;padding:13px 22px;border-radius:999px;
+  font-weight:800;box-shadow:0 14px 30px rgba(90,50,180,.4);transition:.45s cubic-bezier(.2,.9,.2,1);opacity:0;pointer-events:none
+}
+.toast.show{transform:translate(-50%,0);opacity:1}
+.confetti{position:fixed;top:-14px;width:10px;height:14px;z-index:98;pointer-events:none;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg);opacity:.15}}
+footer.ft{text-align:center;color:var(--muted);font-size:13px;padding:8px 14px 34px}
+
+/* SVG-стили */
+.grid line{stroke:var(--line);stroke-width:1}
+.tri-fill{fill:color-mix(in srgb,var(--b1) 10%,transparent)}
+.tri-line{stroke:var(--ink);stroke-width:2.6;fill:none;stroke-linejoin:round}
+.ext{stroke:var(--muted);stroke-width:1.6;stroke-dasharray:6 5;fill:none;opacity:.8}
+.vtx{fill:var(--card);stroke:var(--ink);stroke-width:2.6}
+.vtx.drag{fill:var(--b2);stroke:#fff;cursor:grab}
+.hit{fill:transparent;cursor:grab}
+.lbl{fill:var(--ink);font:800 17px 'Segoe UI',sans-serif;paint-order:stroke;stroke:var(--card);stroke-width:4px;stroke-linejoin:round}
+.lbl.sm{font-size:14px;font-weight:700}
+.mk{stroke-width:2;fill:none}
+.cen{stroke:var(--card);stroke-width:2}
+@media print{
+  header.top,.no-print,footer.ft{display:none!important}
+  .page{display:none!important}.page.active{display:block!important}
+  body{background:#fff}.card{box-shadow:none;border:1px solid #ccc}
+}
+</style>
+</head>
+<body>
+
+<header class="top no-print">
+  <div class="top-in">
+    <div class="top-row">
+      <div class="logo"><div class="ico">📐</div><div>Геометрия · 7 класс<small>ЦО 7.1.1.12 · Линии треугольника</small></div></div>
+      <div class="spacer"></div>
+      <button class="icon-btn" id="themeBtn" title="Сменить тему">🌙</button>
+    </div>
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-go="home">🏠 Главная</button>
+      <button class="tab" data-go="theory">📘 Теория</button>
+      <button class="tab" data-go="practice">✏️ Практикум</button>
+      <button class="tab" data-go="test">✅ Тесты</button>
+      <button class="tab" data-go="reflect">💭 Рефлексия</button>
+      <button class="tab" data-go="homework">📚 Д/З</button>
+    </nav>
+  </div>
+  <div class="topbar-progress"><i id="topProgress"></i></div>
+</header>
+
+<main class="wrap">
+
+<!-- ================= ГЛАВНАЯ ================= -->
+<section class="page active" id="page-home">
+  <div class="hero card">
+    <div class="hero-grid">
+      <div>
+        <span class="badge">📐 Урок геометрии · 7 класс</span>
+        <h1>Медианы, биссектрисы, высоты и средние линии треугольника</h1>
+        <p>Интерактивный урок: изучи теорию, построй линии сам, проверь себя в тесте.</p>
+        <div class="goal">
+          <b>🎯 Цель обучения 7.1.1.12</b>
+          Знать определение медианы, биссектрисы, высоты, серединного перпендикуляра и средней линии треугольника и изображать их.
+        </div>
+      </div>
+      <div>
+        <div class="hero-fig" id="heroFigBox" title="Нажми, чтобы сменить линию">
+          <svg id="heroFig" viewBox="0 0 420 320"></svg>
+          <div class="hero-cap" id="heroCap">Медиана</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid g2">
+    <div class="card">
+      <h2>🚀 К концу урока я смогу</h2>
+      <ul class="ticks" style="--c:var(--b2)">
+        <li>Давать точное определение каждой из пяти линий</li>
+        <li>Строить их циркулем, линейкой и угольником</li>
+        <li>Отличать медиану от биссектрисы и высоты на чертеже</li>
+        <li>Применять свойство средней линии при решении задач</li>
+        <li>Объяснить, где пересекаются эти линии</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>🗺️ Маршрут урока</h2>
+      <ol class="steps">
+        <li><div><b>Теория</b> <span class="muted small">— 5 карточек с чертежами · 10 мин</span></div></li>
+        <div style="display:none"></div>
+        <li><div><b>Практикум</b> <span class="muted small">— живой чертёж + тренажёр · 12 мин</span></div></li>
+        <li><div><b>Тест</b> <span class="muted small">— 10 вопросов, автопроверка · 10 мин</span></div></li>
+        <li><div><b>Рефлексия</b> <span class="muted small">— оцени себя · 3 мин</span></div></li>
+        <li><div><b>Домашнее задание</b> <span class="muted small">— стр. 50, упр. 1, 2, 3</span></div></li>
+      </ol>
+    </div>
+  </div>
+
+  <h2 style="margin:22px 4px 12px">📂 Разделы урока</h2>
+  <div class="grid g3">
+    <button class="navcard" data-go="theory"><div class="em">📘</div><div><b>Теория</b><span class="muted small">Определения, чертежи, свойства и частые ошибки</span></div></button>
+    <button class="navcard" data-go="practice"><div class="em">✏️</div><div><b>Практикум</b><span class="muted small">Двигай вершины треугольника и строй линии</span></div></button>
+    <button class="navcard" data-go="test"><div class="em">✅</div><div><b>Тесты</b><span class="muted small">10 вопросов с автоматической проверкой</span></div></button>
+    <button class="navcard" data-go="reflect"><div class="em">💭</div><div><b>Рефлексия</b><span class="muted small">Лестница успеха и итог урока</span></div></button>
+    <button class="navcard" data-go="homework"><div class="em">📚</div><div><b>Домашнее задание</b><span class="muted small">Выучить теорию · стр. 50, упр. 1, 2, 3</span></div></button>
+    <div class="navcard" style="cursor:default"><div class="em">📊</div><div><b>Мой прогресс</b><span class="muted small" id="homeProgressText">Начни с раздела «Теория»</span></div></div>
+  </div>
+
+  <div class="card center" style="margin-top:18px">
+    <h3>Готов начать? 👇</h3>
+    <p class="muted small">Работай в своём темпе. Все ответы сохраняются в твоём телефоне.</p>
+    <div class="row" style="justify-content:center;margin-top:10px">
+      <button class="btn" data-go="theory">📘 Начать урок</button>
+      <button class="btn ghost" data-go="practice">✏️ Сразу к чертежу</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ТЕОРИЯ ================= -->
+<section class="page" id="page-theory">
+  <div class="card">
+    <span class="badge">📘 Раздел 1</span>
+    <h2 style="margin-top:10px">Пять главных линий треугольника</h2>
+    <p class="muted">Изучи карточки по порядку. Каждая линия имеет свой цвет — он сохраняется в практикуме и тесте.</p>
+    <div class="legend">
+      <span class="lg"><i style="background:var(--median)"></i>Медиана</span>
+      <span class="lg"><i style="background:var(--bisector)"></i>Биссектриса</span>
+      <span class="lg"><i style="background:var(--altitude)"></i>Высота</span>
+      <span class="lg"><i style="background:var(--perp)"></i>Серединный перпендикуляр</span>
+      <span class="lg"><i style="background:var(--midline)"></i>Средняя линия</span>
+    </div>
+  </div>
+
+  <!-- Медиана -->
+  <div class="card concept" style="--c:var(--median)">
+    <div class="head"><div class="num">1</div><h2>Медиана</h2></div>
+    <div class="two">
+      <svg class="fig" viewBox="0 0 420 320" data-fig="median"></svg>
+      <div>
+        <div class="def"><b>Определение.</b> Медиана треугольника — это <b>отрезок</b>, соединяющий <b>вершину</b> треугольника с <b>серединой противолежащей стороны</b>.</div>
+        <p><b>Обозначение:</b> AM, где M — середина BC, то есть <b>BM = MC</b>.</p>
+        <ul class="ticks">
+          <li>В любом треугольнике ровно <b>3 медианы</b></li>
+          <li>Все три медианы пересекаются в <b>одной точке</b> — центроиде (центре тяжести)</li>
+          <li>Центроид делит каждую медиану в отношении <b>2 : 1</b>, считая от вершины</li>
+          <li>Медиана делит треугольник на два треугольника <b>равной площади</b></li>
+        </ul>
+        <details><summary>Как построить медиану (пошагово)</summary>
+          <ol>
+            <li>Измерь сторону BC линейкой (или раствором циркуля).</li>
+            <li>Отметь её середину M: BM = MC.</li>
+            <li>Соедини вершину A с точкой M по линейке.</li>
+            <li>Отметь равные отрезки BM и MC одинаковыми чёрточками.</li>
+          </ol>
+        </details>
+        <div class="note">💡 <b>Запомни:</b> «<b>Медиана идёт к середине</b>». От латинского <i>mediana</i> — средняя.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Биссектриса -->
+  <div class="card concept" style="--c:var(--bisector)">
+    <div class="head"><div class="num">2</div><h2>Биссектриса</h2></div>
+    <div class="two">
+      <svg class="fig" viewBox="0 0 420 320" data-fig="bisector"></svg>
+      <div>
+        <div class="def"><b>Определение.</b> Биссектриса треугольника — это <b>отрезок биссектрисы угла</b> треугольника, который соединяет <b>вершину</b> с точкой на <b>противолежащей стороне</b> и делит угол вершины <b>пополам</b>.</div>
+        <p><b>Обозначение:</b> AD, где D лежит на BC и <b>∠BAD = ∠DAC</b>.</p>
+        <ul class="ticks">
+          <li>В треугольнике <b>3 биссектрисы</b>, и все они всегда внутри треугольника</li>
+          <li>Они пересекаются в одной точке — <b>центре вписанной окружности</b></li>
+          <li>Каждая точка биссектрисы <b>равноудалена от сторон угла</b></li>
+          <li>Биссектриса делит противолежащую сторону на части, пропорциональные прилежащим сторонам</li>
+        </ul>
+        <details><summary>Как построить биссектрису (пошагово)</summary>
+          <ol>
+            <li>Из вершины A проведи дугу, пересекающую стороны AB и AC в точках P и Q.</li>
+            <li>Из точек P и Q одинаковым радиусом проведи две дуги до пересечения в точке R.</li>
+            <li>Проведи луч AR — он делит угол A пополам.</li>
+            <li>Точку пересечения луча со стороной BC обозначь D. Отрезок AD — биссектриса.</li>
+          </ol>
+        </details>
+        <div class="note">💡 <b>Запомни:</b> «<b>Биссектриса — угол пополам</b>». Биссектриса «крыса, которая бегает по углам и делит угол пополам» 🙂</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Высота -->
+  <div class="card concept" style="--c:var(--altitude)">
+    <div class="head"><div class="num">3</div><h2>Высота</h2></div>
+    <div class="two">
+      <svg class="fig" viewBox="0 0 420 320" data-fig="altitude"></svg>
+      <div>
+        <div class="def"><b>Определение.</b> Высота треугольника — это <b>перпендикуляр</b>, проведённый из <b>вершины</b> треугольника к <b>прямой, содержащей противолежащую сторону</b>. Отрезок от вершины до основания перпендикуляра называют высотой.</div>
+        <p><b>Обозначение:</b> AH, где H — основание высоты, <b>AH ⊥ BC</b>.</p>
+        <ul class="ticks">
+          <li>В треугольнике <b>3 высоты</b>, они пересекаются в одной точке — <b>ортоцентре</b></li>
+          <li><b>Остроугольный</b> треугольник: все высоты внутри, ортоцентр внутри</li>
+          <li><b>Прямоугольный</b>: две высоты совпадают с катетами, ортоцентр — в вершине прямого угла</li>
+          <li><b>Тупоугольный</b>: основания двух высот лежат на <b>продолжениях</b> сторон, ортоцентр — вне треугольника</li>
+        </ul>
+        <details><summary>Как построить высоту (пошагово)</summary>
+          <ol>
+            <li>Приложи угольник одним катетом к прямой BC (при тупом угле сначала продли сторону пунктиром).</li>
+            <li>Сдвинь угольник так, чтобы второй катет прошёл через вершину A.</li>
+            <li>Проведи отрезок из A до прямой BC.</li>
+            <li>Обязательно отметь прямой угол значком «⌐» у основания H.</li>
+          </ol>
+        </details>
+        <div class="note red">⚠️ <b>Частая ошибка:</b> высоту проводят «на глазок к середине». Нет! Высота — только <b>под прямым углом</b>, а середина тут ни при чём.</div>
+        <p class="small muted" style="margin-top:12px">👇 Тупоугольный треугольник: две высоты падают на продолжения сторон.</p>
+        <svg class="fig" viewBox="0 0 420 320" data-fig="altitudeObtuse"></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Серединный перпендикуляр -->
+  <div class="card concept" style="--c:var(--perp)">
+    <div class="head"><div class="num">4</div><h2>Серединный перпендикуляр</h2></div>
+    <div class="two">
+      <svg class="fig" viewBox="0 0 420 320" data-fig="perp"></svg>
+      <div>
+        <div class="def"><b>Определение.</b> Серединный перпендикуляр к отрезку — это <b>прямая</b>, проходящая через <b>середину отрезка перпендикулярно</b> ему.</div>
+        <p>Для стороны BC: прямая <i>p</i> проходит через середину M и <b>p ⊥ BC</b>, BM = MC.</p>
+        <ul class="ticks">
+          <li>Каждая точка серединного перпендикуляра <b>равноудалена от концов отрезка</b>: XB = XC</li>
+          <li>Три серединных перпендикуляра к сторонам пересекаются в одной точке</li>
+          <li>Эта точка — <b>центр описанной окружности</b> треугольника</li>
+          <li>Это <b>прямая</b>, а не отрезок: её продолжают в обе стороны</li>
+        </ul>
+        <details><summary>Как построить серединный перпендикуляр</summary>
+          <ol>
+            <li>Из точек B и C радиусом больше половины BC проведи дуги по обе стороны от отрезка.</li>
+            <li>Отметь точки пересечения дуг.</li>
+            <li>Проведи через них прямую — она пройдёт через середину M под прямым углом.</li>
+          </ol>
+        </details>
+        <div class="note red">⚠️ <b>Важно:</b> серединный перпендикуляр, как правило, <b>НЕ проходит через вершину</b> треугольника! Этим он отличается от медианы и высоты.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Средняя линия -->
+  <div class="card concept" style="--c:var(--midline)">
+    <div class="head"><div class="num">5</div><h2>Средняя линия</h2></div>
+    <div class="two">
+      <svg class="fig" viewBox="0 0 420 320" data-fig="midline"></svg>
+      <div>
+        <div class="def"><b>Определение.</b> Средняя линия треугольника — это <b>отрезок, соединяющий середины двух его сторон</b>.</div>
+        <p><b>Обозначение:</b> MN, где M — середина AB, N — середина AC.</p>
+        <ul class="ticks">
+          <li>В треугольнике можно провести <b>3 средние линии</b></li>
+          <li><b>Главное свойство:</b> средняя линия <b>параллельна</b> третьей стороне и <b>равна её половине</b>: MN ∥ BC, MN = ½·BC</li>
+          <li>Средняя линия отсекает треугольник, периметр которого вдвое меньше</li>
+          <li>Три средние линии образуют «серединный» треугольник, его периметр = ½ периметра исходного</li>
+        </ul>
+        <details><summary>Как построить среднюю линию</summary>
+          <ol>
+            <li>Найди середину M стороны AB.</li>
+            <li>Найди середину N стороны AC.</li>
+            <li>Соедини M и N по линейке.</li>
+            <li>Проверь линейкой и угольником: MN ∥ BC, а измерение покажет MN = BC : 2.</li>
+          </ol>
+        </details>
+        <div class="note blue">🧮 <b>Пример:</b> если BC = 18 см, то средняя линия MN = 18 : 2 = <b>9 см</b>. Если периметр треугольника 40 см, то периметр серединного треугольника = <b>20 см</b>.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📊 Сравни всё в одной таблице</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Линия</th><th>Откуда идёт</th><th>Куда идёт</th><th>Главный признак</th><th>Сколько</th></tr></thead>
+        <tbody>
+          <tr><td style="color:var(--median)">Медиана</td><td>Вершина</td><td>Середина противолежащей стороны</td><td>BM = MC</td><td>3</td></tr>
+          <tr><td style="color:var(--bisector)">Биссектриса</td><td>Вершина</td><td>Точка на противолежащей стороне</td><td>∠BAD = ∠DAC</td><td>3</td></tr>
+          <tr><td style="color:var(--altitude)">Высота</td><td>Вершина</td><td>Прямая, содержащая противолежащую сторону</td><td>AH ⊥ BC</td><td>3</td></tr>
+          <tr><td style="color:var(--perp)">Серединный перп.</td><td>Середина стороны</td><td>Прямая ⟂ стороне (не через вершину!)</td><td>BM = MC и p ⊥ BC</td><td>3</td></tr>
+          <tr><td style="color:var(--midline)">Средняя линия</td><td>Середина стороны</td><td>Середина другой стороны</td><td>MN ∥ BC, MN = ½BC</td><td>3</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="grid g2">
+    <div class="card">
+      <h3>⭐ Замечательные точки</h3>
+      <ul class="ticks" style="--c:var(--b2)">
+        <li><b style="color:var(--median)">Медианы</b> → центроид (центр тяжести), делит 2 : 1</li>
+        <li><b style="color:var(--bisector)">Биссектрисы</b> → центр вписанной окружности</li>
+        <li><b style="color:var(--altitude)">Высоты</b> → ортоцентр</li>
+        <li><b style="color:var(--perp)">Серединные перпендикуляры</b> → центр описанной окружности</li>
+      </ul>
+      <div class="note">В <b>равностороннем</b> треугольнике все эти точки совпадают, а медиана, биссектриса и высота из одной вершины — <b>один и тот же отрезок</b>.</div>
+    </div>
+    <div class="card">
+      <h3>🚫 Частые ошибки</h3>
+      <ul class="ticks" style="--c:var(--bad)">
+        <li>Медиана ≠ биссектриса: середина стороны ≠ половина угла</li>
+        <li>Высота не всегда внутри треугольника</li>
+        <li>Серединный перпендикуляр не обязан проходить через вершину</li>
+        <li>Средняя линия <b>не выходит из вершины</b> — она соединяет две середины</li>
+        <li>Забыли отметить прямой угол у высоты — чертёж не засчитан</li>
+      </ul>
+      <div class="row" style="margin-top:12px"><button class="btn" data-go="practice">✏️ Проверить на практике</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ПРАКТИКУМ ================= -->
+<section class="page" id="page-practice">
+  <div class="card">
+    <span class="badge">✏️ Раздел 2</span>
+    <h2 style="margin-top:10px">Живой чертёж: двигай вершины!</h2>
+    <p class="muted small">Перетаскивай точки <b>A</b>, <b>B</b>, <b>C</b> пальцем или мышкой. Включай линии кнопками и наблюдай, что меняется, а что остаётся верным.</p>
+
+    <div class="chips" style="margin-bottom:12px" id="presets">
+      <button class="chip" data-preset="acute" style="--c:var(--b1)"><span class="dot"></span>Остроугольный</button>
+      <button class="chip" data-preset="right" style="--c:var(--b1)"><span class="dot"></span>Прямоугольный</button>
+      <button class="chip" data-preset="obtuse" style="--c:var(--b1)"><span class="dot"></span>Тупоугольный</button>
+      <button class="chip" data-preset="iso" style="--c:var(--b1)"><span class="dot"></span>Равнобедренный</button>
+      <button class="chip" data-preset="equ" style="--c:var(--b1)"><span class="dot"></span>Равносторонний</button>
+    </div>
+
+    <div class="chips" id="lineToggles" style="margin-bottom:12px">
+      <label class="chip" style="--c:var(--median)"><input type="checkbox" data-line="median"><span class="dot"></span>Медианы</label>
+      <label class="chip" style="--c:var(--bisector)"><input type="checkbox" data-line="bisector"><span class="dot"></span>Биссектрисы</label>
+      <label class="chip" style="--c:var(--altitude)"><input type="checkbox" data-line="altitude"><span class="dot"></span>Высоты</label>
+      <label class="chip" style="--c:var(--perp)"><input type="checkbox" data-line="perp"><span class="dot"></span>Серединные перп.</label>
+      <label class="chip" style="--c:var(--midline)"><input type="checkbox" data-line="midline"><span class="dot"></span>Средние линии</label>
+    </div>
+    <div class="chips" style="margin-bottom:12px">
+      <label class="chip on" style="--c:var(--b2)"><input type="checkbox" id="optGrid" checked><span class="dot"></span>Сетка</label>
+      <label class="chip" style="--c:var(--b2)"><input type="checkbox" id="optCenters"><span class="dot"></span>Точки пересечения</label>
+      <button class="chip" id="clearLines" style="--c:var(--bad)"><span class="dot"></span>Очистить всё</button>
+    </div>
+
+    <svg id="lab" class="lab-svg" viewBox="0 0 420 320"></svg>
+
+    <div class="readouts" id="readouts"></div>
+    <div class="note blue" id="labHint" style="margin-top:12px">👆 Включи хотя бы одну линию и подвигай вершину.</div>
+  </div>
+
+  <div class="card">
+    <h2>🔍 Задания-исследования <span class="pill ok" id="taskCount">0 / 5</span></h2>
+    <p class="muted small">Выполняй действия на чертеже выше — галочки появятся автоматически.</p>
+    <div class="tasklist" id="taskList"></div>
+  </div>
+
+  <div class="card">
+    <h2>🎯 Тренажёр «Узнай линию»</h2>
+    <p class="muted small">Посмотри на чертёж и определи, какая линия изображена. Счёт: <b id="trScore">0</b> из <b id="trTotal">0</b> <span id="trStreak"></span></p>
+    <svg id="trainerFig" class="fig" viewBox="0 0 420 320" style="max-width:430px;margin:0 auto 14px"></svg>
+    <div id="trOptions" class="grid" style="gap:0"></div>
+    <div id="trFeedback"></div>
+    <div class="row" style="margin-top:10px">
+      <button class="btn sm" id="trNext">Следующий чертёж →</button>
+      <button class="btn sm ghost" id="trReset">Сбросить счёт</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ТЕСТЫ ================= -->
+<section class="page" id="page-test">
+  <div id="testStart">
+    <div class="card center">
+      <span class="badge">✅ Раздел 3</span>
+      <h2 style="margin-top:10px">Тест по теме «Линии треугольника»</h2>
+      <p class="muted">10 вопросов · один правильный ответ · автоматическая проверка<br>Ограничения по времени нет — думай спокойно.</p>
+      <div class="grid g3" style="margin:16px 0">
+        <div class="ro"><span>Вопросов</span><b>10</b></div>
+        <div class="ro"><span>Проходной балл</span><b>6 из 10</b></div>
+        <div class="ro"><span>Лучший результат</span><b id="bestScore">—</b></div>
+      </div>
+      <button class="btn" id="startTest">🚀 Начать тест</button>
+      <div class="note" style="text-align:left;margin-top:16px">💡 Совет: перед тестом повтори определения в разделе <b>«Теория»</b> и попробуй построить все линии в <b>«Практикуме»</b>.</div>
+    </div>
+  </div>
+
+  <div id="testQuiz" style="display:none">
+    <div class="card">
+      <div class="qbar"><i id="qProgress"></i></div>
+      <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span class="badge" id="qCounter">Вопрос 1 / 10</span>
+        <span class="muted small" id="qTimer">00:00</span>
+      </div>
+      <h3 id="qText" style="margin-top:10px"></h3>
+      <div id="qFigBox"></div>
+      <div id="qOptions" style="margin-top:12px"></div>
+      <div class="row" style="justify-content:space-between;margin-top:14px">
+        <button class="btn ghost sm" id="qPrev">← Назад</button>
+        <button class="btn" id="qNext" disabled>Далее →</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="testResult" style="display:none">
+    <div class="card center">
+      <span class="badge">📊 Результат</span>
+      <div class="ring" id="resRing" style="--p:0"><span id="resScore">0/10</span></div>
+      <h2 id="resTitle"></h2>
+      <p class="muted" id="resText"></p>
+      <p class="small muted" id="resTime"></p>
+      <div class="row" style="justify-content:center;margin-top:12px">
+        <button class="btn" id="retryTest">🔄 Пройти ещё раз</button>
+        <button class="btn ghost" data-go="theory">📘 Повторить теорию</button>
+        <button class="btn ghost" data-go="reflect">💭 Рефлексия</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>🧾 Разбор ответов</h3>
+      <div id="resReview"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= РЕФЛЕКСИЯ ================= -->
+<section class="page" id="page-reflect">
+  <div class="card">
+    <span class="badge">💭 Раздел 4</span>
+    <h2 style="margin-top:10px">Рефлексия: оцени свою работу</h2>
+    <p class="muted small">Ответы сохраняются только в твоём телефоне. Их можно скопировать и отправить учителю.</p>
+  </div>
+
+  <div class="card">
+    <h3>🪜 Лестница успеха</h3>
+    <div class="ladder" id="ladder">
+      <button class="lad" data-lv="1"><span class="e">🤔</span><div><b>1 ступень.</b> Пока трудно, нужна помощь учителя</div></button>
+      <button class="lad" data-lv="2"><span class="e">🙂</span><div><b>2 ступень.</b> Понимаю определения, но путаюсь в построениях</div></button>
+      <button class="lad" data-lv="3"><span class="e">😃</span><div><b>3 ступень.</b> Знаю определения и умею строить все линии</div></button>
+      <button class="lad" data-lv="4"><span class="e">🚀</span><div><b>4 ступень.</b> Могу объяснить эту тему однокласснику</div></button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>😀 Моё настроение на уроке</h3>
+    <div class="moods" id="moods">
+      <button class="mood" data-m="😀">😀</button><button class="mood" data-m="🙂">🙂</button>
+      <button class="mood" data-m="😐">😐</button><button class="mood" data-m="😕">😕</button>
+      <button class="mood" data-m="🤯">🤯</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>✅ Проверь свои умения</h3>
+    <div id="skills"></div>
+  </div>
+
+  <div class="card">
+    <h3>✍️ Закончи предложения</h3>
+    <p class="small muted">Сегодня я узнал(а), что…</p>
+    <textarea id="rf1" placeholder="Например: медиана соединяет вершину с серединой стороны…"></textarea>
+    <p class="small muted" style="margin-top:12px">Мне было трудно…</p>
+    <textarea id="rf2" placeholder="Например: строить высоту в тупоугольном треугольнике…"></textarea>
+    <p class="small muted" style="margin-top:12px">Теперь я умею…</p>
+    <textarea id="rf3" placeholder="Например: находить длину средней линии…"></textarea>
+    <p class="small muted" style="margin-top:12px">Вопрос учителю (необязательно)</p>
+    <textarea id="rf4" style="min-height:60px" placeholder="Что осталось непонятным?"></textarea>
+    <div class="row" style="margin-top:14px">
+      <button class="btn" id="rfSave">💾 Сохранить</button>
+      <button class="btn ghost" id="rfCopy">📋 Скопировать итог</button>
+      <button class="btn ghost" id="rfPrint">🖨️ Печать</button>
+    </div>
+    <div id="rfSaved" class="note" style="display:none;margin-top:14px"></div>
+  </div>
+</section>
+
+<!-- ================= ДОМАШНЕЕ ЗАДАНИЕ ================= -->
+<section class="page" id="page-homework">
+  <div class="hw-big card">
+    <span class="badge" style="background:rgba(255,255,255,.25);color:#fff">📚 Раздел 5</span>
+    <h2 style="margin-top:10px;font-size:clamp(21px,5.4vw,30px)">Домашнее задание</h2>
+    <p style="opacity:.95">Срок сдачи — <b>следующий урок геометрии</b>.</p>
+    <div class="hw-item"><b>1️⃣ Выучить теорию</b><p style="margin:6px 0 0">Определения медианы, биссектрисы, высоты, серединного перпендикуляра и средней линии треугольника + их свойства (раздел «Теория»).</p></div>
+    <div class="hw-item"><b>2️⃣ Решить в тетради</b><p style="margin:6px 0 0;font-size:18px"><b>Страница 50, упражнения 1, 2, 3</b></p><p style="margin:6px 0 0;opacity:.95">Чертежи выполняй карандашом по линейке, отмечай равные отрезки и прямые углы.</p></div>
+  </div>
+
+  <div class="card">
+    <h3>☑️ Мой чек-лист <span class="pill ok" id="hwCount">0 / 4</span></h3>
+    <div id="hwList"></div>
+    <div class="note">📌 Не забудь: в задачах на среднюю линию работает правило <b>«параллельна и вдвое меньше»</b>.</div>
+  </div>
+
+  <div class="grid g2">
+    <div class="card">
+      <h3>💡 Подсказки к упражнениям</h3>
+      <details><summary>Упр. 1 — построения</summary><p class="small">Начни с аккуратного чертежа треугольника. Середину стороны находи измерением или циркулем. Высоту строй угольником и обязательно ставь значок прямого угла. Помни: у тупоугольного треугольника сторону придётся продлить.</p></details>
+      <details><summary>Упр. 2 — определения и распознавание</summary><p class="small">Смотри на marks-подсказки: равные отрезки → медиана или серединный перпендикуляр; равные углы → биссектриса; прямой угол → высота; две середины → средняя линия.</p></details>
+      <details><summary>Упр. 3 — вычисления</summary><p class="small">Если дана средняя линия MN и сторона BC, то MN = BC : 2, а BC = MN · 2. Периметр серединного треугольника равен половине периметра исходного.</p></details>
+    </div>
+    <div class="card">
+      <h3>🧠 Памятка на дом</h3>
+      <ul class="ticks" style="--c:var(--b2)">
+        <li>Медиана: вершина → <b>середина</b> стороны</li>
+        <li>Биссектриса: вершина → <b>угол пополам</b></li>
+        <li>Высота: вершина → <b>перпендикуляр</b> к прямой</li>
+        <li>Серединный перпендикуляр: <b>середина + ⟂</b>, это прямая</li>
+        <li>Средняя линия: <b>середина + середина</b>, ∥ стороне и = ½ её</li>
+        <li>Каждых линий в треугольнике — <b>по три</b></li>
+      </ul>
+      <div class="row" style="margin-top:10px">
+        <button class="btn sm" data-go="theory">📘 Открыть теорию</button>
+        <button class="btn sm ghost" data-go="test">✅ Пройти тест ещё раз</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="ft no-print">Геометрия · 7 класс · ЦО 7.1.1.12 · Интерактивный урок «Линии треугольника» 📐</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   ХРАНИЛИЩЕ
+========================================================= */
+const store={
+  get(k,d){try{const v=localStorage.getItem('geo7_'+k);return v===null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem('geo7_'+k,JSON.stringify(v))}catch(e){}}
+};
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200);}
+
+/* =========================================================
+   НАВИГАЦИЯ
+========================================================= */
+const PAGES=['home','theory','practice','test','reflect','homework'];
+let visited=store.get('visited',[]);
+function go(id){
+  if(!PAGES.includes(id))id='home';
+  $$('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+id));
+  $$('.tab').forEach(t=>t.classList.toggle('active',t.dataset.go===id));
+  const at=$('.tab.active'); if(at&&at.scrollIntoView)at.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});
+  if(location.hash.slice(1)!==id)history.replaceState(null,'','#'+id);
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(id!=='home'&&!visited.includes(id)){visited.push(id);store.set('visited',visited);}
+  updateProgress();
+}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b){go(b.dataset.go);}});
+window.addEventListener('hashchange',()=>go(location.hash.slice(1)||'home'));
+
+/* тема */
+const themeBtn=$('#themeBtn');
+function setTheme(t){document.documentElement.dataset.theme=t;themeBtn.textContent=t==='dark'?'☀️':'🌙';store.set('theme',t);}
+setTheme(store.get('theme','light'));
+themeBtn.onclick=()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark');
+
+/* =========================================================
+   ГЕОМЕТРИЧЕСКИЙ ДВИЖОК (SVG)
+========================================================= */
+const NS='http://www.w3.org/2000/svg';
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+const sub=(p,q)=>({x:p.x-q.x,y:p.y-q.y});
+const add=(p,q)=>({x:p.x+q.x,y:p.y+q.y});
+const mul=(p,k)=>({x:p.x*k,y:p.y*k});
+const dot=(p,q)=>p.x*q.x+p.y*q.y;
+const len=p=>Math.hypot(p.x,p.y);
+const norm=p=>{const l=len(p)||1;return{x:p.x/l,y:p.y/l}};
+const mid=(p,q)=>({x:(p.x+q.x)/2,y:(p.y+q.y)/2});
+const dist=(p,q)=>Math.hypot(p.x-q.x,p.y-q.y);
+const COL={median:'#ef4444',bisector:'#10b981',altitude:'#3b82f6',perp:'#a855f7',midline:'#f59e0b'};
+function footT(P,Q,R){const d=sub(R,Q);return dot(sub(P,Q),d)/(dot(d,d)||1);}
+function foot(P,Q,R){const d=sub(R,Q);return add(Q,mul(d,footT(P,Q,R)));}
+function angleAt(P,Q,R){const u=norm(sub(Q,P)),v=norm(sub(R,P));return Math.acos(Math.max(-1,Math.min(1,dot(u,v))))*180/Math.PI;}
+function circum(A,B,C){
+  const d=2*(A.x*(B.y-C.y)+B.x*(C.y-A.y)+C.x*(A.y-B.y));
+  if(Math.abs(d)<1e-6)return null;
+  const a=A.x*A.x+A.y*A.y,b=B.x*B.x+B.y*B.y,c=C.x*C.x+C.y*C.y;
+  return{x:(a*(B.y-C.y)+b*(C.y-A.y)+c*(A.y-B.y))/d, y:(a*(C.x-B.x)+b*(A.x-C.x)+c*(B.x-A.x))/d};
+}
+function tick(g,p,dir,n,color,size){
+  const u=norm(dir),nv={x:-u.y,y:u.x};
+  for(let i=0;i<n;i++){
+    const c=add(p,mul(u,(i-(n-1)/2)*5));
+    el('line',{x1:c.x-nv.x*size,y1:c.y-nv.y*size,x2:c.x+nv.x*size,y2:c.y+nv.y*size,stroke:color,'stroke-width':2.2,'stroke-linecap':'round'},g);
+  }
+}
+function rightAngle(g,H,u,v,color,s){
+  u=norm(u);v=norm(v);
+  const p1=add(H,mul(u,s)),p2=add(add(H,mul(u,s)),mul(v,s)),p3=add(H,mul(v,s));
+  el('polyline',{points:`${p1.x},${p1.y} ${p2.x},${p2.y} ${p3.x},${p3.y}`,fill:'none',stroke:color,'stroke-width':2.2},g);
+}
+function arcMark(g,V,d1,d2,r,color){
+  const a1=Math.atan2(d1.y,d1.x),a2=Math.atan2(d2.y,d2.x);
+  let dl=a2-a1;while(dl>Math.PI)dl-=2*Math.PI;while(dl<-Math.PI)dl+=2*Math.PI;
+  const s=add(V,mul(norm(d1),r)),e=add(V,mul(norm(d2),r));
+  el('path',{d:`M ${s.x} ${s.y} A ${r} ${r} 0 0 ${dl>0?1:0} ${e.x} ${e.y}`,fill:'none',stroke:color,'stroke-width':2.2},g);
+  const am=a1+dl/2,md={x:Math.cos(am),y:Math.sin(am)};
+  el('line',{x1:V.x+md.x*(r-4),y1:V.y+md.y*(r-4),x2:V.x+md.x*(r+4),y2:V.y+md.y*(r+4),stroke:color,'stroke-width':2.2},g);
+}
+/**
+ * Отрисовка сцены.
+ * cfg: {grid,median:[],bisector:[],altitude:[],perp:[],midline:[],nameExtras,drag,points,centers}
+ * median/bisector/altitude — по вершине ('A'), perp — по стороне ('BC'), midline — по противоположной вершине ('A')
+ */
+function drawScene(svg,P,cfg){
+  const c=Object.assign({grid:false,median:[],bisector:[],altitude:[],perp:[],midline:[],nameExtras:true,drag:false,points:true,centers:false,labels:true},cfg||{});
+  svg.innerHTML='';
+  const A=P.A,B=P.B,C=P.C,V={A,B,C};
+  const G=el('g',{},svg);
+  if(c.grid){const gg=el('g',{class:'grid'},G);
+    for(let x=20;x<420;x+=20)el('line',{x1:x,y1:0,x2:x,y2:320},gg);
+    for(let y=20;y<320;y+=20)el('line',{x1:0,y1:y,x2:420,y2:y},gg);}
+  el('polygon',{points:`${A.x},${A.y} ${B.x},${B.y} ${C.x},${C.y}`,class:'tri-fill'},G);
+  const gLines=el('g',{},G),gMark=el('g',{},G),gTop=el('g',{},G);
+  const extras=[];
+  const sides={A:['B','C'],B:['A','C'],C:['A','B']};
+
+  // продолжения сторон для высот
+  c.altitude.forEach(k=>{
+    const [p,q]=sides[k].map(s=>V[s]),Pv=V[k],t=footT(Pv,p,q),H=foot(Pv,p,q);
+    if(t<0)el('line',{x1:p.x,y1:p.y,x2:H.x,y2:H.y,class:'ext'},gLines);
+    if(t>1)el('line',{x1:q.x,y1:q.y,x2:H.x,y2:H.y,class:'ext'},gLines);
+  });
+  el('polygon',{points:`${A.x},${A.y} ${B.x},${B.y} ${C.x},${C.y}`,class:'tri-line'},gLines);
+
+  // МЕДИАНЫ
+  c.median.forEach(k=>{
+    const [p,q]=sides[k].map(s=>V[s]),Pv=V[k],M=mid(p,q);
+    el('line',{x1:Pv.x,y1:Pv.y,x2:M.x,y2:M.y,stroke:COL.median,'stroke-width':3,'stroke-linecap':'round'},gLines);
+    if(c.nameExtras){tick(gMark,mid(p,M),sub(q,p),1,COL.median,6);tick(gMark,mid(M,q),sub(q,p),1,COL.median,6);}
+    extras.push({p:M,t:{A:'M',B:'N',C:'K'}[k],c:COL.median});
+  });
+  // БИССЕКТРИСЫ
+  c.bisector.forEach(k=>{
+    const [pn,qn]=sides[k],p=V[pn],q=V[qn],Pv=V[k];
+    const c1=dist(Pv,p),c2=dist(Pv,q),D=add(p,mul(sub(q,p),c1/(c1+c2)));
+    el('line',{x1:Pv.x,y1:Pv.y,x2:D.x,y2:D.y,stroke:COL.bisector,'stroke-width':3,'stroke-linecap':'round'},gLines);
+    if(c.nameExtras){arcMark(gMark,Pv,sub(p,Pv),sub(D,Pv),30,COL.bisector);arcMark(gMark,Pv,sub(D,Pv),sub(q,Pv),30,COL.bisector);}
+    extras.push({p:D,t:'D',c:COL.bisector});
+  });
+  // ВЫСОТЫ
+  c.altitude.forEach(k=>{
+    const [p,q]=sides[k].map(s=>V[s]),Pv=V[k],H=foot(Pv,p,q);
+    el('line',{x1:Pv.x,y1:Pv.y,x2:H.x,y2:H.y,stroke:COL.altitude,'stroke-width':3,'stroke-linecap':'round'},gLines);
+    if(c.nameExtras&&dist(Pv,H)>6)rightAngle(gMark,H,sub(q,p),sub(Pv,H),COL.altitude,11);
+    extras.push({p:H,t:'H',c:COL.altitude});
+  });
+  // СЕРЕДИННЫЕ ПЕРПЕНДИКУЛЯРЫ
+  c.perp.forEach(side=>{
+    const p=V[side[0]],q=V[side[1]],M=mid(p,q),u=norm(sub(q,p));
+    let nv={x:-u.y,y:u.x};
+    const third=V[['A','B','C'].find(k=>!side.includes(k))];
+    if(dot(nv,sub(third,M))<0)nv=mul(nv,-1);
+    const L=52+dist(p,q)*0.22;
+    el('line',{x1:M.x-nv.x*L*0.55,y1:M.y-nv.y*L*0.55,x2:M.x+nv.x*L,y2:M.y+nv.y*L,stroke:COL.perp,'stroke-width':2.8,'stroke-linecap':'round'},gLines);
+    if(c.nameExtras){rightAngle(gMark,M,u,nv,COL.perp,11);tick(gMark,mid(p,M),u,1,COL.perp,6);tick(gMark,mid(M,q),u,1,COL.perp,6);}
+    extras.push({p:M,t:'M',c:COL.perp});
+  });
+  // СРЕДНИЕ ЛИНИИ
+  c.midline.forEach(k=>{
+    const [pn,qn]=sides[k],p=V[pn],q=V[qn],Pv=V[k];
+    const M=mid(Pv,p),N=mid(Pv,q);
+    el('line',{x1:M.x,y1:M.y,x2:N.x,y2:N.y,stroke:COL.midline,'stroke-width':3.4,'stroke-linecap':'round'},gLines);
+    if(c.nameExtras){
+      tick(gMark,mid(Pv,M),sub(p,Pv),1,COL.midline,6);tick(gMark,mid(M,p),sub(p,Pv),1,COL.midline,6);
+      tick(gMark,mid(Pv,N),sub(q,Pv),2,COL.midline,6);tick(gMark,mid(N,q),sub(q,Pv),2,COL.midline,6);
+    }
+    extras.push({p:M,t:'M',c:COL.midline},{p:N,t:'N',c:COL.midline});
+  });
+  // точки пересечения
+  if(c.centers){
+    const cen=[];
+    if(c.median.length===3)cen.push({p:{x:(A.x+B.x+C.x)/3,y:(A.y+B.y+C.y)/3},c:COL.median,n:'центроид'});
+    if(c.bisector.length===3){const a=dist(B,C),b=dist(C,A),cc=dist(A,B),s=a+b+cc;
+      cen.push({p:{x:(a*A.x+b*B.x+cc*C.x)/s,y:(a*A.y+b*B.y+cc*C.y)/s},c:COL.bisector,n:'центр вписанной окр.'});}
+    const O=circum(A,B,C);
+    if(O&&c.perp.length===3)cen.push({p:O,c:COL.perp,n:'центр описанной окр.'});
+    if(O&&c.altitude.length===3)cen.push({p:{x:A.x+B.x+C.x-2*O.x,y:A.y+B.y+C.y-2*O.y},c:COL.altitude,n:'ортоцентр'});
+    cen.forEach(o=>el('circle',{cx:o.p.x,cy:o.p.y,r:6,fill:o.c,class:'cen'},gTop));
+    svg._centers=cen.map(o=>o.n);
+  } else svg._centers=[];
+  // подписи дополнительных точек
+  if(c.nameExtras){
+    const ctr={x:(A.x+B.x+C.x)/3,y:(A.y+B.y+C.y)/3};
+    extras.forEach(e=>{
+      const d=norm(sub(e.p,ctr)),pos=add(e.p,mul(d,15));
+      const t=el('text',{x:pos.x,y:pos.y+5,class:'lbl sm','text-anchor':'middle',fill:e.c},gTop);t.textContent=e.t;
+    });
+  }
+  // вершины
+  const ctr={x:(A.x+B.x+C.x)/3,y:(A.y+B.y+C.y)/3};
+  ['A','B','C'].forEach(k=>{
+    const p=V[k];
+    if(c.points)el('circle',{cx:p.x,cy:p.y,r:c.drag?9:6,class:'vtx'+(c.drag?' drag':'')},gTop);
+    if(c.labels){const d=norm(sub(p,ctr)),lp=add(p,mul(d,22));
+      const t=el('text',{x:lp.x,y:lp.y+6,class:'lbl','text-anchor':'middle'},gTop);t.textContent=k;}
+    if(c.drag){const h=el('circle',{cx:p.x,cy:p.y,r:24,class:'hit','data-v':k},gTop);h.style.touchAction='none';}
+  });
+}
+
+/* =========================================================
+   ТЕОРЕТИЧЕСКИЕ ЧЕРТЕЖИ
+========================================================= */
+const TP={A:{x:60,y:258},B:{x:368,y:258},C:{x:158,y:58}};
+const OP={A:{x:70,y:200},B:{x:250,y:200},C:{x:320,y:80}};
+const FIGS={
+  median:{pts:TP,cfg:{median:['A']}},
+  bisector:{pts:TP,cfg:{bisector:['A']}},
+  altitude:{pts:TP,cfg:{altitude:['C']}},
+  altitudeObtuse:{pts:OP,cfg:{altitude:['A','B','C'],nameExtras:false}},
+  perp:{pts:TP,cfg:{perp:['BC']}},
+  midline:{pts:TP,cfg:{midline:['A']}}
+};
+$$('[data-fig]').forEach(s=>{const f=FIGS[s.dataset.fig];if(f)drawScene(s,f.pts,f.cfg);});
+
+/* живая иллюстрация на главной */
+const heroSeq=[
+  {k:'median',t:'Медиана — к середине стороны'},
+  {k:'bisector',t:'Биссектриса — угол пополам'},
+  {k:'altitude',t:'Высота — под прямым углом'},
+  {k:'perp',t:'Серединный перпендикуляр'},
+  {k:'midline',t:'Средняя линия — середина + середина'}
+];
+let heroI=0,heroTimer;
+function heroDraw(){
+  const s=heroSeq[heroI],cfg={nameExtras:true};
+  cfg[s.k]= s.k==='perp'?['BC']:['A'];
+  drawScene($('#heroFig'),TP,cfg);
+  $('#heroCap').textContent=s.t;
+  $('#heroCap').style.color=COL[s.k];
+}
+function heroCycle(){heroTimer=setInterval(()=>{heroI=(heroI+1)%heroSeq.length;heroDraw();},2800);}
+heroDraw();heroCycle();
+$('#heroFigBox').onclick=()=>{clearInterval(heroTimer);heroI=(heroI+1)%heroSeq.length;heroDraw();heroCycle();};
+
+/* =========================================================
+   ПРАКТИКУМ: ЛАБОРАТОРИЯ
+========================================================= */
+const PRESETS={
+  acute:{A:{x:70,y:265},B:{x:355,y:265},C:{x:205,y:60}},
+  right:{A:{x:80,y:265},B:{x:355,y:265},C:{x:80,y:65}},
+  obtuse:{A:{x:60,y:230},B:{x:245,y:230},C:{x:345,y:80}},
+  iso:{A:{x:80,y:265},B:{x:340,y:265},C:{x:210,y:65}},
+  equ:{A:{x:80,y:272},B:{x:340,y:272},C:{x:210,y:47}}
+};
+let P=JSON.parse(JSON.stringify(PRESETS.acute));
+const lab=$('#lab');
+const shown={median:false,bisector:false,altitude:false,perp:false,midline:false};
+const ALL=['A','B','C'],ALLS=['AB','BC','CA'];
+const SCALE=20; // 20 px = 1 см
+
+function labCfg(){
+  const c={grid:$('#optGrid').checked,drag:true,nameExtras:false,centers:$('#optCenters').checked};
+  for(const k in shown)if(shown[k])c[k]=(k==='perp')?ALLS:ALL;
+  return c;
+}
+function renderLab(){
+  drawScene(lab,P,labCfg());
+  bindDrag();
+  updateReadouts();
+  checkTasks();
+}
+function bindDrag(){
+  $$('.hit',lab).forEach(h=>{
+    h.addEventListener('pointerdown',ev=>{
+      ev.preventDefault();
+      const key=h.dataset.v;
+      lab.setPointerCapture(ev.pointerId);
+      const move=e=>{
+        const pt=lab.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;
+        const m=lab.getScreenCTM();if(!m)return;
+        const l=pt.matrixTransform(m.inverse());
+        P[key]={x:Math.max(24,Math.min(396,l.x)),y:Math.max(24,Math.min(296,l.y))};
+        renderLab();
+      };
+      const up=e=>{lab.removeEventListener('pointermove',move);lab.removeEventListener('pointerup',up);lab.removeEventListener('pointercancel',up);};
+      lab.addEventListener('pointermove',move);
+      lab.addEventListener('pointerup',up);
+      lab.addEventListener('pointercancel',up);
+    });
+  });
+}
+function triInfo(){
+  const a=dist(P.B,P.C),b=dist(P.C,P.A),c=dist(P.A,P.B);
+  const ang={A:angleAt(P.A,P.B,P.C),B:angleAt(P.B,P.A,P.C),C:angleAt(P.C,P.A,P.B)};
+  const mx=Math.max(ang.A,ang.B,ang.C);
+  let type=mx>90.7?'тупоугольный':(mx>=89.3?'прямоугольный':'остроугольный');
+  const eq=(u,v)=>Math.abs(u-v)/Math.max(u,v)<0.03;
+  let kind=eq(a,b)&&eq(b,c)?'равносторонний':(eq(a,b)||eq(b,c)||eq(a,c)?'равнобедренный':'разносторонний');
+  return{a,b,c,ang,max:mx,type,kind};
+}
+function updateReadouts(){
+  const i=triInfo(),f=n=>(n/SCALE).toFixed(1);
+  let html=`
+   <div class="ro"><span>Стороны, см</span><b>AB=${f(i.c)} · BC=${f(i.a)} · CA=${f(i.b)}</b></div>
+   <div class="ro"><span>Углы</span><b>∠A=${i.ang.A.toFixed(0)}° ∠B=${i.ang.B.toFixed(0)}° ∠C=${i.ang.C.toFixed(0)}°</b></div>
+   <div class="ro"><span>Вид треугольника</span><b>${i.type}, ${i.kind}</b></div>`;
+  if(shown.midline){
+    const M=mid(P.A,P.B),N=mid(P.A,P.C);
+    html+=`<div class="ro" style="border-color:var(--midline)"><span>Средняя линия MN</span><b>MN=${f(dist(M,N))} = ½·BC=${f(i.a/2)} ✔</b></div>`;
+  }
+  if(shown.median){
+    const G={x:(P.A.x+P.B.x+P.C.x)/3,y:(P.A.y+P.B.y+P.C.y)/3},M=mid(P.B,P.C);
+    html+=`<div class="ro" style="border-color:var(--median)"><span>Центроид делит медиану</span><b>AG : GM = ${(dist(P.A,G)/dist(G,M)).toFixed(2)} : 1</b></div>`;
+  }
+  if(shown.altitude&&i.max>90.7){
+    html+=`<div class="ro" style="border-color:var(--altitude)"><span>Внимание!</span><b>Две высоты вне треугольника</b></div>`;
+  }
+  $('#readouts').innerHTML=html;
+  const on=Object.keys(shown).filter(k=>shown[k]);
+  const hints={
+    median:'🔴 Все три медианы всегда пересекаются в одной точке внутри треугольника. Подвигай вершину — это не меняется!',
+    bisector:'🟢 Биссектрисы делят углы пополам и тоже всегда внутри треугольника.',
+    altitude:'🔵 Сделай треугольник тупоугольным — и увидишь, что основания высот убегают на продолжения сторон.',
+    perp:'🟣 Серединные перпендикуляры проходят через середины сторон, но НЕ через вершины (кроме особого случая).',
+    midline:'🟠 Средняя линия всегда параллельна третьей стороне и ровно вдвое короче. Сравни числа выше!'
+  };
+  $('#labHint').innerHTML=on.length?on.map(k=>hints[k]).join('<br>'):'👆 Включи хотя бы одну линию и подвигай вершину.';
+}
+$$('#lineToggles input').forEach(inp=>{
+  inp.addEventListener('change',()=>{
+    shown[inp.dataset.line]=inp.checked;
+    inp.closest('.chip').classList.toggle('on',inp.checked);
+    renderLab();
+  });
+});
+$('#optGrid').addEventListener('change',e=>{e.target.closest('.chip').classList.toggle('on',e.target.checked);renderLab();});
+$('#optCenters').addEventListener('change',e=>{e.target.closest('.chip').classList.toggle('on',e.target.checked);renderLab();});
+$('#clearLines').onclick=()=>{
+  for(const k in shown)shown[k]=false;
+  $$('#lineToggles input').forEach(i=>{i.checked=false;i.closest('.chip').classList.remove('on')});
+  renderLab();toast('Чертёж очищен');
+};
+$$('#presets .chip').forEach(b=>b.onclick=()=>{
+  P=JSON.parse(JSON.stringify(PRESETS[b.dataset.preset]));
+  $$('#presets .chip').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  renderLab();
+});
+
+/* задания-исследования */
+const TASKS=[
+  {id:'t1',txt:'Включи <b>медианы</b> и найди точку, где они пересекаются. Подвигай вершину — точка всегда внутри?',test:()=>shown.median},
+  {id:'t2',txt:'Сделай треугольник <b>тупоугольным</b> (один угол больше 90°).',test:()=>triInfo().max>90.7},
+  {id:'t3',txt:'Включи <b>высоты</b> у тупоугольного треугольника и найди основания на продолжениях сторон.',test:()=>shown.altitude&&triInfo().max>90.7},
+  {id:'t4',txt:'Включи <b>средние линии</b> и проверь по числам: MN = ½·BC.',test:()=>shown.midline},
+  {id:'t5',txt:'Включи одновременно <b>медианы</b> и <b>серединные перпендикуляры</b> — сравни, чем они отличаются.',test:()=>shown.median&&shown.perp}
+];
+let tasksDone=store.get('tasks',{});
+function renderTasks(){
+  $('#taskList').innerHTML=TASKS.map((t,i)=>`<div class="task ${tasksDone[t.id]?'done':''}" id="${t.id}"><div class="box">✓</div><div><b>${i+1}.</b> ${t.txt}</div></div>`).join('');
+  $('#taskCount').textContent=TASKS.filter(t=>tasksDone[t.id]).length+' / '+TASKS.length;
+}
+function checkTasks(){
+  let changed=false;
+  TASKS.forEach(t=>{if(!tasksDone[t.id]&&t.test()){tasksDone[t.id]=true;changed=true;toast('Задание выполнено! ✅');}});
+  if(changed){store.set('tasks',tasksDone);updateProgress();}
+  renderTasks();
+}
+renderTasks();renderLab();
+
+/* =========================================================
+   ТРЕНАЖЁР «УЗНАЙ ЛИНИЮ»
+========================================================= */
+const TR_NAMES=[
+  {k:'median',n:'Медиана'},{k:'bisector',n:'Биссектриса'},{k:'altitude',n:'Высота'},
+  {k:'perp',n:'Серединный перпендикуляр'},{k:'midline',n:'Средняя линия'}
+];
+const TR_EXP={
+  median:'Отрезок идёт из вершины в <b>середину</b> противолежащей стороны (равные чёрточки на половинках).',
+  bisector:'Отрезок из вершины делит <b>угол пополам</b> — одинаковые дуги у вершины.',
+  altitude:'Из вершины проведён <b>перпендикуляр</b> к стороне — есть значок прямого угла.',
+  perp:'Прямая проходит через <b>середину стороны под прямым углом</b> и не проходит через вершину.',
+  midline:'Отрезок соединяет <b>середины двух сторон</b>, он параллелен третьей и вдвое короче.'
+};
+let trScore=store.get('trScore',0),trTotal=store.get('trTotal',0),trStreak=0,trAnswer=null,trLocked=false;
+function randTriangle(){
+  for(let i=0;i<400;i++){
+    const p={A:{x:55+Math.random()*310,y:60+Math.random()*205},
+             B:{x:55+Math.random()*310,y:60+Math.random()*205},
+             C:{x:55+Math.random()*310,y:60+Math.random()*205}};
+    const a=dist(p.B,p.C),b=dist(p.C,p.A),c=dist(p.A,p.B);
+    if(Math.min(a,b,c)<125||Math.max(a,b,c)>320)continue;
+    const an=[angleAt(p.A,p.B,p.C),angleAt(p.B,p.A,p.C),angleAt(p.C,p.A,p.B)];
+    if(Math.min(...an)<36||Math.max(...an)>100)continue;
+    const area=Math.abs((p.B.x-p.A.x)*(p.C.y-p.A.y)-(p.C.x-p.A.x)*(p.B.y-p.A.y))/2;
+    if(area<11000)continue;
+    return p;
+  }
+  return JSON.parse(JSON.stringify(TP));
+}
+function trNew(){
+  trLocked=false;$('#trFeedback').innerHTML='';
+  for(let attempt=0;attempt<300;attempt++){
+    const p=randTriangle(),keys=['A','B','C'];
+    const k=keys[Math.floor(Math.random()*3)];
+    const others=keys.filter(x=>x!==k),Q=p[others[0]],R=p[others[1]],Vx=p[k];
+    const s1=dist(Vx,Q),s2=dist(Vx,R),ratio=Math.max(s1,s2)/Math.min(s1,s2);
+    if(ratio<1.32)continue;
+    const M=mid(Q,R),H=foot(Vx,Q,R),t=footT(Vx,Q,R);
+    const c1=dist(Vx,Q),c2=dist(Vx,R),D=add(Q,mul(sub(R,Q),c1/(c1+c2)));
+    if(t<0.12||t>0.88)continue;
+    if(dist(M,H)<18||dist(M,D)<18||dist(H,D)<15)continue;
+    const type=TR_NAMES[Math.floor(Math.random()*5)].k;
+    const cfg={nameExtras:true};
+    if(type==='perp')cfg.perp=[others.join('')];
+    else cfg[type]=[k];
+    drawScene($('#trainerFig'),p,cfg);
+    trAnswer=type;break;
+  }
+  $('#trOptions').innerHTML=TR_NAMES.map(o=>`<button class="opt" data-tr="${o.k}">${o.n}</button>`).join('');
+  $$('#trOptions .opt').forEach(b=>b.onclick=()=>trCheck(b));
+  $('#trScore').textContent=trScore;$('#trTotal').textContent=trTotal;
+}
+function trCheck(btn){
+  if(trLocked)return;trLocked=true;
+  const pick=btn.dataset.tr,ok=pick===trAnswer;
+  trTotal++;if(ok){trScore++;trStreak++;}else trStreak=0;
+  store.set('trScore',trScore);store.set('trTotal',trTotal);
+  $$('#trOptions .opt').forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.tr===trAnswer)b.classList.add('right');
+    else if(b===btn)b.classList.add('wrong');
+  });
+  const name=TR_NAMES.find(o=>o.k===trAnswer).n;
+  $('#trFeedback').innerHTML=`<div class="note ${ok?'':'red'}" style="margin-top:6px">${ok?'✅ <b>Верно!</b>':'❌ <b>Не угадал.</b> Это <b>'+name+'</b>.'} ${TR_EXP[trAnswer]}</div>`;
+  $('#trScore').textContent=trScore;$('#trTotal').textContent=trTotal;
+  $('#trStreak').textContent=trStreak>=2?` · 🔥 серия ${trStreak}`:'';
+  if(ok&&trStreak%5===0)confetti(24);
+}
+$('#trNext').onclick=trNew;
+$('#trReset').onclick=()=>{trScore=0;trTotal=0;trStreak=0;store.set('trScore',0);store.set('trTotal',0);$('#trStreak').textContent='';trNew();toast('Счёт сброшен');};
+trNew();
+
+/* =========================================================
+   ТЕСТ (10 ВОПРОСОВ)
+========================================================= */
+const QUESTIONS=[
+ {q:'Отрезок, соединяющий вершину треугольника с серединой противолежащей стороны, называется…',
+  o:['биссектрисой','медианой','высотой','средней линией'],a:1,
+  e:'Медиана: вершина → середина противолежащей стороны (BM = MC).'},
+ {q:'Биссектриса треугольника — это отрезок, который…',
+  o:['делит сторону пополам','соединяет середины двух сторон','делит угол треугольника пополам и соединяет вершину с точкой на противолежащей стороне','перпендикулярен стороне'],a:2,
+  e:'Биссектриса делит угол вершины пополам: ∠BAD = ∠DAC.'},
+ {q:'Высота треугольника — это…',
+  o:['перпендикуляр из вершины к прямой, содержащей противолежащую сторону','отрезок из вершины в середину стороны','прямая через середину стороны','отрезок, делящий угол пополам'],a:0,
+  e:'Высота обязательно образует прямой угол: AH ⊥ BC.'},
+ {q:'Прямая, проходящая через середину отрезка перпендикулярно ему, называется…',
+  o:['медианой','средней линией','биссектрисой','серединным перпендикуляром'],a:3,
+  e:'Серединный перпендикуляр: середина + прямой угол. Он не обязан проходить через вершину.'},
+ {q:'Сколько высот можно провести в любом треугольнике?',
+  o:['одну','две','три','шесть'],a:2,
+  e:'Из каждой из трёх вершин — по одной высоте. Итого 3 (как и медиан, и биссектрис).'},
+ {q:'Какая линия изображена на чертеже?',fig:true,
+  o:['Медиана','Биссектриса','Высота','Средняя линия'],a:0,
+  e:'Отрезок идёт из вершины C к середине стороны AB — равные чёрточки показывают, что половинки равны. Это медиана.'},
+ {q:'Средняя линия треугольника соединяет…',
+  o:['вершину и середину стороны','середины двух сторон треугольника','две вершины','вершину с точкой на стороне'],a:1,
+  e:'Средняя линия = середина + середина. Она параллельна третьей стороне и равна её половине.'},
+ {q:'В треугольнике ABC сторона AC = 16 см. MN — средняя линия, параллельная AC. Чему равна MN?',
+  o:['32 см','16 см','8 см','4 см'],a:2,
+  e:'MN = AC : 2 = 16 : 2 = 8 см.'},
+ {q:'В равнобедренном треугольнике медиана, проведённая к основанию, является также…',
+  o:['только биссектрисой','только высотой','и биссектрисой, и высотой','средней линией'],a:2,
+  e:'Особое свойство равнобедренного треугольника: медиана к основанию совпадает с биссектрисой и высотой.'},
+ {q:'Периметр треугольника ABC равен 36 см. Чему равен периметр треугольника, образованного его средними линиями?',
+  o:['72 см','36 см','18 см','12 см'],a:2,
+  e:'Каждая средняя линия вдвое меньше своей стороны, значит и периметр вдвое меньше: 36 : 2 = 18 см.'}
+];
+const QFIG_P={A:{x:65,y:255},B:{x:365,y:255},C:{x:295,y:62}};
+let quiz=[],qi=0,answers=[],tStart=0,tTimer=null;
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+function bestText(){const b=store.get('best',null);$('#bestScore').textContent=b===null?'—':b+' / 10';}
+bestText();
+$('#startTest').onclick=startTest;$('#retryTest').onclick=startTest;
+function startTest(){
+  quiz=shuffle(QUESTIONS).map(q=>({...q,opts:shuffle(q.o.map((t,i)=>({t,ok:i===q.a})))}));
+  qi=0;answers=new Array(quiz.length).fill(null);
+  $('#testStart').style.display='none';$('#testResult').style.display='none';$('#testQuiz').style.display='block';
+  tStart=Date.now();clearInterval(tTimer);
+  tTimer=setInterval(()=>{const s=Math.floor((Date.now()-tStart)/1000);
+    $('#qTimer').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');},1000);
+  renderQ();window.scrollTo({top:0,behavior:'smooth'});
+}
+function renderQ(){
+  const q=quiz[qi];
+  $('#qCounter').textContent=`Вопрос ${qi+1} / ${quiz.length}`;
+  $('#qProgress').style.width=((qi)/quiz.length*100)+'%';
+  $('#qText').textContent=q.q;
+  $('#qFigBox').innerHTML=q.fig?'<svg id="qFig" class="fig" viewBox="0 0 420 320" style="max-width:380px;margin:10px auto"></svg>':'';
+  if(q.fig)drawScene($('#qFig'),QFIG_P,{median:['C'],nameExtras:true});
+  $('#qOptions').innerHTML=q.opts.map((o,i)=>`<button class="opt ${answers[qi]===i?'sel':''}" data-i="${i}"><b>${'АБВГ'[i]}.</b> ${o.t}</button>`).join('');
+  $$('#qOptions .opt').forEach(b=>b.onclick=()=>{answers[qi]=+b.dataset.i;renderQ();});
+  $('#qPrev').disabled=qi===0;
+  $('#qNext').disabled=answers[qi]===null;
+  $('#qNext').textContent=qi===quiz.length-1?'Завершить тест ✔':'Далее →';
+}
+$('#qPrev').onclick=()=>{if(qi>0){qi--;renderQ();}};
+$('#qNext').onclick=()=>{if(answers[qi]===null)return;if(qi<quiz.length-1){qi++;renderQ();}else finish();};
+function finish(){
+  clearInterval(tTimer);
+  const secs=Math.floor((Date.now()-tStart)/1000);
+  let score=0;quiz.forEach((q,i)=>{if(answers[i]!==null&&q.opts[answers[i]].ok)score++;});
+  const best=store.get('best',0);if(score>best)store.set('best',score);
+  store.set('lastTest',{score,date:new Date().toLocaleString('ru-RU')});
+  bestText();updateProgress();
+  $('#testQuiz').style.display='none';$('#testResult').style.display='block';
+  const pc=score*10;
+  $('#resRing').style.setProperty('--p',0);
+  setTimeout(()=>$('#resRing').style.setProperty('--p',pc),80);
+  $('#resScore').textContent=score+'/10';
+  let mark,title,msg;
+  if(score>=9){mark='5';title='Отлично! 🎉';msg='Ты прекрасно знаешь определения и умеешь распознавать линии треугольника.';confetti(60);}
+  else if(score>=8){mark='4';title='Хорошо! 👏';msg='Совсем немного до идеала — повтори вопросы, где ошибся.';confetti(30);}
+  else if(score>=6){mark='3';title='Неплохо, но нужно повторить 📘';msg='Вернись к теории и практикуму, затем пройди тест ещё раз.';}
+  else{mark='2';title='Нужно повторить теорию 📖';msg='Не расстраивайся! Изучи карточки теории, построй линии в практикуме и попробуй снова.';}
+  $('#resTitle').textContent=`${title} Оценка: ${mark}`;
+  $('#resText').innerHTML=msg+`<br>Правильных ответов: <b>${score} из 10 (${pc}%)</b>`;
+  $('#resTime').textContent=`Время: ${Math.floor(secs/60)} мин ${secs%60} с · Лучший результат: ${Math.max(score,best)} / 10`;
+  $('#resReview').innerHTML=quiz.map((q,i)=>{
+    const ok=answers[i]!==null&&q.opts[answers[i]].ok;
+    const your=answers[i]===null?'нет ответа':q.opts[answers[i]].t;
+    const right=q.opts.find(o=>o.ok).t;
+    return `<div class="review ${ok?'':'bad'}">
+      <div class="qt">${i+1}. ${q.q} <span class="pill ${ok?'ok':'no'}">${ok?'верно':'ошибка'}</span></div>
+      <div class="ln">Твой ответ: <b>${your}</b></div>
+      ${ok?'':`<div class="ln">Правильно: <b style="color:var(--ok)">${right}</b></div>`}
+      <div class="exp">💡 ${q.e}</div></div>`;
+  }).join('');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function confetti(n){
+  const cols=['#6366f1','#a855f7','#ec4899','#f59e0b','#10b981','#3b82f6'];
+  for(let i=0;i<n;i++){
+    const d=document.createElement('div');d.className='confetti';
+    d.style.left=Math.random()*100+'vw';d.style.background=cols[i%cols.length];
+    d.style.animationDuration=(2+Math.random()*1.8)+'s';d.style.animationDelay=(Math.random()*.5)+'s';
+    d.style.width=(6+Math.random()*8)+'px';d.style.height=(9+Math.random()*10)+'px';
+    document.body.appendChild(d);setTimeout(()=>d.remove(),4200);
+  }
+}
+
+/* =========================================================
+   РЕФЛЕКСИЯ
+========================================================= */
+const SKILLS=[
+ 'Я знаю определение медианы и умею её строить',
+ 'Я знаю определение биссектрисы и умею её строить',
+ 'Я знаю определение высоты и умею её строить',
+ 'Я знаю, что такое серединный перпендикуляр',
+ 'Я знаю определение средней линии и её свойство'
+];
+let rf=store.get('reflect',{lv:0,mood:'',skills:[],t:['','','','']});
+$('#skills').innerHTML=SKILLS.map((s,i)=>`<label class="check ${rf.skills.includes(i)?'done':''}"><input type="checkbox" data-sk="${i}" ${rf.skills.includes(i)?'checked':''}><span>${s}</span></label>`).join('');
+$$('#skills input').forEach(inp=>inp.onchange=()=>{
+  const i=+inp.dataset.sk;
+  if(inp.checked){if(!rf.skills.includes(i))rf.skills.push(i);}else rf.skills=rf.skills.filter(x=>x!==i);
+  inp.closest('.check').classList.toggle('done',inp.checked);saveRf(false);
+});
+function paintRf(){
+  $$('#ladder .lad').forEach(b=>b.classList.toggle('on',+b.dataset.lv===rf.lv));
+  $$('#moods .mood').forEach(b=>b.classList.toggle('on',b.dataset.m===rf.mood));
+  ['rf1','rf2','rf3','rf4'].forEach((id,i)=>$('#'+id).value=rf.t[i]||'');
+}
+$$('#ladder .lad').forEach(b=>b.onclick=()=>{rf.lv=+b.dataset.lv;paintRf();saveRf(false);});
+$$('#moods .mood').forEach(b=>b.onclick=()=>{rf.mood=b.dataset.m;paintRf();saveRf(false);});
+['rf1','rf2','rf3','rf4'].forEach((id,i)=>$('#'+id).addEventListener('input',e=>{rf.t[i]=e.target.value;}));
+function saveRf(showToast){
+  rf.date=new Date().toLocaleString('ru-RU');
+  store.set('reflect',rf);updateProgress();
+  const box=$('#rfSaved');box.style.display='block';
+  box.innerHTML=`✅ <b>Сохранено ${rf.date}</b><br>Ступень: ${rf.lv||'—'} · Настроение: ${rf.mood||'—'} · Умений отмечено: ${rf.skills.length} из 5`;
+  if(showToast)toast('Рефлексия сохранена 💾');
+}
+$('#rfSave').onclick=()=>saveRf(true);
+$('#rfPrint').onclick=()=>window.print();
+$('#rfCopy').onclick=async()=>{
+  const b=store.get('best','—');
+  const txt=`Рефлексия · Геометрия 7 · Линии треугольника (7.1.1.12)
+Дата: ${new Date().toLocaleString('ru-RU')}
+Лестница успеха: ${rf.lv||'—'} ступень   Настроение: ${rf.mood||'—'}
+Умения: ${rf.skills.length}/5
+Тест (лучший): ${b}/10
+Сегодня я узнал(а): ${rf.t[0]||'—'}
+Мне было трудно: ${rf.t[1]||'—'}
+Теперь я умею: ${rf.t[2]||'—'}
+Вопрос учителю: ${rf.t[3]||'—'}`;
+  try{await navigator.clipboard.writeText(txt);toast('Итог скопирован 📋');}
+  catch(e){const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('Итог скопирован 📋');}
+};
+paintRf();
+
+/* =========================================================
+   ДОМАШНЕЕ ЗАДАНИЕ
+========================================================= */
+const HW=['Выучить определения и свойства (теория)','Тетрадь, стр. 50 — упражнение 1','Тетрадь, стр. 50 — упражнение 2','Тетрадь, стр. 50 — упражнение 3'];
+let hw=store.get('hw',[]);
+function renderHw(){
+  $('#hwList').innerHTML=HW.map((t,i)=>`<label class="check ${hw.includes(i)?'done':''}"><input type="checkbox" data-hw="${i}" ${hw.includes(i)?'checked':''}><span>${t}</span></label>`).join('');
+  $$('#hwList input').forEach(inp=>inp.onchange=()=>{
+    const i=+inp.dataset.hw;
+    if(inp.checked){if(!hw.includes(i))hw.push(i);}else hw=hw.filter(x=>x!==i);
+    store.set('hw',hw);renderHw();updateProgress();
+    if(hw.length===HW.length){toast('Домашнее задание выполнено! 🎉');confetti(40);}
+  });
+  $('#hwCount').textContent=hw.length+' / '+HW.length;
+}
+renderHw();
+
+/* =========================================================
+   ОБЩИЙ ПРОГРЕСС
+========================================================= */
+function updateProgress(){
+  const visitedP=Math.min(visited.length,5)/5*20;
+  const tasksP=TASKS.filter(t=>tasksDone[t.id]).length/TASKS.length*20;
+  const testP=(store.get('best',0)/10)*30;
+  const rfP=(store.get('reflect',{lv:0}).lv?15:0);
+  const hwP=store.get('hw',[]).length/HW.length*15;
+  const total=Math.round(visitedP+tasksP+testP+rfP+hwP);
+  $('#topProgress').style.width=Math.min(100,total)+'%';
+  const b=store.get('best',null);
+  $('#homeProgressText').innerHTML=`Пройдено: <b>${Math.min(100,total)}%</b><br>Тест: ${b===null?'ещё не пройден':b+'/10'} · Д/З: ${store.get('hw',[]).length}/4`;
+}
+updateProgress();
+go(location.hash.slice(1)||'home');
+</script>
+</body>
+</html>
